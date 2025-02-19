@@ -14,7 +14,11 @@ export const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <div className="flex items-center space-x-8">
-            <h1 className="text-2xl font-semibold tracking-tight">SpotSeeker</h1>
+            <img 
+              src="/lovable-uploads/8bce6e02-94e2-421a-ae28-7b8172add5bf.png" 
+              alt="ParkUrWay Logo" 
+              className="h-8"
+            />
             <div className="relative w-96">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
               <input
