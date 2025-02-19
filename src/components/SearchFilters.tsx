@@ -19,14 +19,41 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { SlidersHorizontal } from "lucide-react";
+import { useToast } from "./ui/use-toast";
 
 export const SearchFilters = () => {
   const [priceRange, setPriceRange] = useState([0, 100]);
+  const [isOpen, setIsOpen] = useState(false);
+  const [vehicleType, setVehicleType] = useState("");
+  const [features, setFeatures] = useState("");
+  const [rating, setRating] = useState("");
+  const [sortBy, setSortBy] = useState("");
+  const { toast } = useToast();
+
+  const handleApplyFilters = () => {
+    // Here you would typically pass these filters to a parent component
+    // or trigger a data fetch with the selected filters
+    const filters = {
+      priceRange,
+      vehicleType,
+      features,
+      rating,
+      sortBy,
+    };
+    
+    console.log("Applied filters:", filters);
+    setIsOpen(false);
+    
+    toast({
+      title: "Filters applied",
+      description: "The parking spots have been filtered according to your preferences.",
+    });
+  };
 
   return (
     <div className="py-6">
       <div className="container mx-auto px-4">
-        <DropdownMenu>
+        <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="w-[180px]">
               <SlidersHorizontal className="mr-2 h-4 w-4" />
@@ -36,16 +63,24 @@ export const SearchFilters = () => {
           <DropdownMenuContent className="w-80 p-4">
             <DropdownMenuLabel>Sort By</DropdownMenuLabel>
             <DropdownMenuGroup>
-              <DropdownMenuItem>Price: Low to High</DropdownMenuItem>
-              <DropdownMenuItem>Price: High to Low</DropdownMenuItem>
-              <DropdownMenuItem>Rating: Highest First</DropdownMenuItem>
-              <DropdownMenuItem>Distance: Nearest First</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSortBy("price-asc")}>
+                Price: Low to High
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSortBy("price-desc")}>
+                Price: High to Low
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSortBy("rating")}>
+                Rating: Highest First
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => setSortBy("distance")}>
+                Distance: Nearest First
+              </DropdownMenuItem>
             </DropdownMenuGroup>
             
             <DropdownMenuSeparator />
             
             <DropdownMenuLabel>Vehicle Type</DropdownMenuLabel>
-            <Select>
+            <Select value={vehicleType} onValueChange={setVehicleType}>
               <SelectTrigger className="mt-2">
                 <SelectValue placeholder="Select vehicle type" />
               </SelectTrigger>
@@ -73,7 +108,7 @@ export const SearchFilters = () => {
             </div>
 
             <DropdownMenuLabel className="mt-2">Features</DropdownMenuLabel>
-            <Select>
+            <Select value={features} onValueChange={setFeatures}>
               <SelectTrigger className="mt-2">
                 <SelectValue placeholder="Select features" />
               </SelectTrigger>
@@ -86,7 +121,7 @@ export const SearchFilters = () => {
             </Select>
 
             <DropdownMenuLabel className="mt-4">Rating</DropdownMenuLabel>
-            <Select>
+            <Select value={rating} onValueChange={setRating}>
               <SelectTrigger className="mt-2">
                 <SelectValue placeholder="Select minimum rating" />
               </SelectTrigger>
@@ -99,7 +134,7 @@ export const SearchFilters = () => {
             </Select>
 
             <div className="mt-6 flex justify-end">
-              <Button>Apply Filters</Button>
+              <Button onClick={handleApplyFilters}>Apply Filters</Button>
             </div>
           </DropdownMenuContent>
         </DropdownMenu>
